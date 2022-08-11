@@ -18,6 +18,10 @@ function Login()
         let a = await back(logInfo)
         console.log(a)
         setResponse(a.result)
+        if(a.result == "Password Success") {
+            sessionStorage.setItem("userId",a.userId)
+            sessionStorage.setItem("name",a.name)
+        } 
     }
 
     const back=async(logInfo)=>

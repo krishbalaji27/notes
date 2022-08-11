@@ -6,7 +6,7 @@ app = Flask(__name__)
 db = mysql.connector.connect(
     host = "localhost",
     user = "balaji",
-    passwd = "balaji22",
+    passwd = "balaji",
     database = "notes"
 )
 mycursor = db.cursor(buffered=True)
@@ -22,12 +22,12 @@ def signup():
     mailId = b.get("mail")
     password = b.get("password")
     profession = b.get("profession")
-    mycursor.execute("select password from user_details where email= %s", (mailId,))
+    mycursor.execute("select password from user_details where mail= %s", (mailId,))
     user=mycursor.fetchone()
     if user:
         return {"result":"user already exists"}
 
-    mycursor.execute('insert into user_details values (NULL,%s,%s,%s,%s)', (mailId,name,password,profession))
+    mycursor.execute('insert into user_details values (%s,%s,%s,%s,NULL)', (name,mailId,password,profession))
     db.commit()
     print(request.data)
     return {"result":"Success"}
@@ -39,16 +39,15 @@ def login():
     print(type(b))
     checkPass = b.get("pass")
     logMail = b.get("mailId")
-    mycursor.execute("select * from user_details where email= %s", (logMail,))
+    mycursor.execute("select * from user_details where mail= %s", (logMail,))
     mailDb=mycursor.fetchone()
     print(mailDb)
     print(type(mailDb))
     print("checking pass",checkPass)
-    print(mailDb[3])
     if not mailDb:
         return {"result":"You entered wrong email Id"}
-    elif checkPass == mailDb[3]:
-        return {"result":"Password Success"}
+    elif checkPass == mailDb[2]:
+        return {"result":"Password Success", "userId" : mailDb[4], "name": mailDb[0]}
     else:
         return {"result":" You entered wrong Password"}
 
