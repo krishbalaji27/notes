@@ -9,9 +9,7 @@ Switch, Route} from "react-router-dom" ;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Router>
-    <Switch>
-      <Route exact path = "/">{App}</Route>
-    </Switch>
+    <App/>
   </Router>
   
 );
