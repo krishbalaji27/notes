@@ -1,6 +1,8 @@
 #from urllib import request
+from unittest import result
 import mysql.connector
 from flask import Flask,request
+import json
 
 app = Flask(__name__)
 db = mysql.connector.connect(
@@ -29,7 +31,7 @@ def signup():
 
     mycursor.execute('insert into user_details values (%s,%s,%s,%s,NULL)', (name,mailId,password,profession))
     db.commit()
-    print(request.data)
+    #print(request.data)
     return {"result":"Success"}
 
 @app.route("/api/login",methods=['POST'])
@@ -51,5 +53,38 @@ def login():
     else:
         return {"result":" You entered wrong Password"}
 
+
+
+def util(inputDict,currentKey,nameDict):
+    result= dict()
+    result["id"] = currentKey
+    result["name"] = nameDict[currentKey]
+    if currentKey in inputDict: # and len(inputDict[currentKey])> 0:
+        result["children"]=list()
+        for i in  inputDict[currentKey]:
+            ans = util(inputDict,i,nameDict )
+            result["children"].append(ans)
+    print(result)
+    return result
+
+
+@app.route("/api/details",methods=['POST','GET'])
+def details():
+    mycursor.execute("select * from topics")
+    topics = mycursor.fetchall()
+    a = dict()
+    b = dict()
+    for i in topics:
+        print(i)
+        b[i[0]] = i[1]
+        if(i[2] in a):
+            a[i[2]].append(i[0])
+        else:
+            a[i[2]]=[i[0]]
+    for i in a:
+        print(i,a[i])
+    # ToDo remove hard code
+    result= util(a,1,b)
+    return {"result":json.dumps(result)}
 if __name__=="__main__":
     app.run(debug=True)
