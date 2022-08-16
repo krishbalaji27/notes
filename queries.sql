@@ -32,8 +32,6 @@ constraint userId_ckn_1 FOREIGN KEY (userId)
 REFERENCES user_details(id) ON UPDATE CASCADE ON DELETE CASCADE
  );
 
- 13/08/22
-
 insert into topics values (null,'Data Structures' , Null);
 insert into topics values (null, 'Array' , 1);
 select * from topics;

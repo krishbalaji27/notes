@@ -86,5 +86,12 @@ def details():
     # ToDo remove hard code
     result= util(a,1,b)
     return {"result":json.dumps(result)}
+@app.route("/api/select",methods=['POST','GET'])
+def select():
+    a=request.get_json()
+    getId = a.get("Id")
+    mycursor.execute("select category,value from content where topicId=%s",(getId,))
+    value = mycursor.fetchall()
+    return {"ShowValue":value   }
 if __name__=="__main__":
     app.run(debug=True)
