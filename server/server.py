@@ -93,5 +93,8 @@ def select():
     mycursor.execute("select category,value from content where topicId=%s",(getId,))
     value = mycursor.fetchall()
     return {"ShowValue":value   }
+@app.route("/api/addEntry",methods=['POST','GET'])
+def addEntry():
+    return {"result":"sucess added"   }
 if __name__=="__main__":
     app.run(debug=True)

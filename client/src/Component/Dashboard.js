@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import SuperTreeview from 'react-super-treeview';
 import axios from 'axios';
  import '../../node_modules/react-super-treeview/dist/style.css'
+import Altertable from './Altertable';
 function Dashboard() {
     const [data,setdata] = useState([]) 
     const [value,setValue] = useState(null) 
@@ -41,6 +42,7 @@ function Dashboard() {
                 }}
 
             />
+            <Altertable />
            <table>
             <tr>
                 <th> Title</th>
